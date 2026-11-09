@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { sections, sectionKeys, getEntries, formatDate, type Entry } from '../../lib/sections';
+
+export async function getStaticPaths() {
+  const lists = await Promise.all(sectionKeys.map(getEntries));
+  return lists.flat().map((entry) => ({
+    params: { section: entry.collection, id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: Entry };
+const section = sections[entry.collection];
+const { Content } = await render(entry);
+---
+
+<Base title={entry.data.title} description={entry.data.description}>
+  <article class="panel">
+    <a href={`/${entry.collection}/`}>{section.title}</a>
+    <h1>{entry.data.title}</h1>
+    <p class="lead">{entry.data.description}</p>
+    <p class="meta">
+      <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+      {entry.data.tags.length > 0 && <span>, {entry.data.tags.join(', ')}</span>}
+    </p>
+    <div class="prose"><Content /></div>
+  </article>
+</Base>

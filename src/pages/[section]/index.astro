@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { sections, sectionKeys, getEntries, entryUrl, formatDate, type SectionKey } from '../../lib/sections';
+
+export function getStaticPaths() {
+  return sectionKeys.map((section) => ({ params: { section } }));
+}
+
+const key = Astro.params.section as SectionKey;
+const section = sections[key];
+const entries = await getEntries(key);
+---
+
+<Base title={section.title} description={section.intro}>
+  <section class="panel">
+    <h1><img src={section.icon} alt="" width="48" height="48" />{section.title}</h1>
+    <p class="lead">{section.intro}</p>
+    <ul class="entries">
+      {
+        entries.map((entry) => (
+          <li>
+            <a href={entryUrl(entry)}>{entry.data.title}</a>
+            <p>{entry.data.description}</p>
+            <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
