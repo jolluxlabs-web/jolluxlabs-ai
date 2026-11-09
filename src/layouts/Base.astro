@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
 import { sections, sectionKeys } from '../lib/sections';
 
 interface Props {
@@ -21,6 +22,7 @@ const fullTitle = title ? `${title} | JolluxLab` : 'JolluxLab, an AI lab noteboo
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@700&family=Lexend:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet" />
+    <Analytics />
   </head>
   <body>
     <header class="sky">
